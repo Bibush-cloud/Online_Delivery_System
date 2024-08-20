@@ -1,8 +1,8 @@
 package org.example.online_delivery_system.controller;
 
-import org.example.online_delivery_system.dto.MyUserDetailService;
+import org.example.online_delivery_system.security.MyUserDetailService;
 import org.example.online_delivery_system.entity.User;
-import org.example.online_delivery_system.service.JwtService;
+import org.example.online_delivery_system.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +30,7 @@ public class ContentController {
                 user.getUsername(), user.getPassword()
         ));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(myUserDetailService.loadUserByUsername( user.getUsername()));
+            return jwtService.generateToken(myUserDetailService.loadUserByUsername(user.getUsername()));
         } else {
             throw new UsernameNotFoundException("Invalid credentials");
         }

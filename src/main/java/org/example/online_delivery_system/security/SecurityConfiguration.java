@@ -1,7 +1,5 @@
 package org.example.online_delivery_system.security;
 
-import org.example.online_delivery_system.dto.JwtAuthenticationFilter;
-import org.example.online_delivery_system.dto.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package org.example.online_delivery_system.dto;
+package org.example.online_delivery_system.security;
 
 import org.example.online_delivery_system.entity.User;
 import org.example.online_delivery_system.repository.UserRepository;
