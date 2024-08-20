@@ -1,9 +1,13 @@
 package org.example.online_delivery_system.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +20,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtService {
 
-    private static final String SECRET = "638CBE3A90E0303BF3808F40F95A7F02A24B4B5D029C954CF553F79E9EF1DC0384BE681C249F1223F6B55AA21DC070914834CA22C8DD98E14A872CA010091ACC";
-    private static final long VALIDITY = TimeUnit.MINUTES.toMillis(45);
+    private static final String SECRET = "M26bxPklC9apQM1q93hs9v6iyvmHdfxi1PcvcVtSkfQ="; //Generated from JwtSecretMakerTest.java
+    private static final long VALIDITY = TimeUnit.HOURS.toMillis(1);
 
     private Key getSigningKey() {
         byte[] keyBytes = SECRET.getBytes(StandardCharsets.UTF_8);
@@ -36,7 +41,7 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + VALIDITY))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
-        System.out.println("Generated token: " + token);
+        log.info("Generated token: " + token);
         return token;
     }
 
@@ -50,13 +55,20 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public boolean isTokenValid(String jwt) {
         try {
             extractAllClaims(jwt);
             return !isTokenExpired(jwt);
+        } catch (ExpiredJwtException e) {
+            log.error("Expired JWT token", e);
+            return false;
         } catch (Exception e) {
             return false;
         }

@@ -1,5 +1,6 @@
 package org.example.online_delivery_system.advice;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.example.online_delivery_system.dto.ErrorDetails;
 import org.example.online_delivery_system.exception.AlreadyExistException;
 import org.example.online_delivery_system.exception.ResourceNotFoundException;
@@ -26,6 +27,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleAlreadyExistException(
             AlreadyExistException ex, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorDetails> handleExpiredJwtExceptionException(
+            AlreadyExistException ex, WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Token expired. Please Login Again",
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
