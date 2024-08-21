@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET = "M26bxPklC9apQM1q93hs9v6iyvmHdfxi1PcvcVtSkfQ="; //Generated from JwtSecretMakerTest.java
-    private static final long VALIDITY = TimeUnit.HOURS.toMillis(1);
+    private static final long VALIDITY = TimeUnit.HOURS.toMillis(128);
 
     private Key getSigningKey() {
         byte[] keyBytes = SECRET.getBytes(StandardCharsets.UTF_8);

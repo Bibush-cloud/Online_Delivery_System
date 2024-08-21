@@ -21,4 +21,6 @@ public class OrderDto {
     private int quantity;
 
     private LocalDateTime orderDate;
+
+    private Integer userId;
 }

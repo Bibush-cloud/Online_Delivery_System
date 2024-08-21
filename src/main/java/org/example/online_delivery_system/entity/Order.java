@@ -25,4 +25,8 @@ public class Order {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
     private Payment payment;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
